@@ -31,7 +31,8 @@ def get_posts():
 
 def check_posts():
     for post in posts_data:
-        response = requests.get(post.url, headers=headers)
+        api_url = post["permalink"] + ".json"
+        response = requests.get(api_url, headers=headers)
         if response.status_code == 200:
             data = response.json()
             comments_data = data[1]["data"]["children"]

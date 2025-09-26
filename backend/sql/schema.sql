@@ -1,6 +1,9 @@
 CREATE DATABASE IF NOT EXISTS tscrapper;
 USE tscrapper;
 
+
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -14,7 +17,7 @@ CREATE TABLE posts (
     url VARCHAR(255) NOT NULL UNIQUE,
     title VARCHAR(100) NOT NULL UNIQUE,
     author VARCHAR(100) NOT NULL UNIQUE,
-    number_of_comments INT DEFAULT 0;
+    comments INT DEFAULT 0;
     ups INT DEFAULT 0;
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
@@ -23,7 +26,7 @@ CREATE TABLE posts (
 CREATE TABLE comments (
     post_id VARCHAR(100) NOT NULL UNIQUE,
     parent_id VARCHAR(100) NOT NULL UNIQUE,
-    id VARCHAR(100) NOT NULL UNIQUE,
+    author VARCHAR(100) NOT NULL UNIQUE,
     body VARCHAR(255) NOT NULL UNIQUE,
     url VARCHAR(255) NOT NULL UNIQUE,
     ups INT DEFAULT 0;

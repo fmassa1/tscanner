@@ -48,6 +48,7 @@ def check_posts():
                         "ups": comment.get("ups"),
                         "id": comment.get("id"),
                         "parent_id": comment.get("parent_id"),
+                        "url": comment.get("url"),
                     })
             
             post["comments"] = comments

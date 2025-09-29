@@ -51,20 +51,27 @@ def check_posts():
             for c in comments_data:
                 if c["kind"] == "t1":
                     comment = c["data"]
-                    comments.append({
-                        "name": comment.get("author"),
+                    new_comment = {
                         "author": comment.get("author"),
+                        "author_fullname": comment.get("author_fullname"),
                         "body": comment.get("body"),
                         "ups": comment.get("ups"),
                         "id": comment.get("id"),
                         "parent_id": comment.get("parent_id"),
-                        "url": comment.get("url"),
-                    })
+                        "url": comment.get("permalink"),
+                        "created_on": datetime.datetime.fromtimestamp(comment.get("created_utc"), tz=datetime.timezone.utc),
+
+                    }
+                    if new_comment.get("author") == "[deleted]":
+                        new_comment["author_fullname"] = "[deleted]"
+                    comments.append(new_comment)
+                    addUserToDB(new_comment)
+                    addCommentToDB(new_comment)
             
             post["comments"] = comments
 
 get_posts()
 check_posts()
-print(len(posts_data[:5]))
-for p in posts_data:
-    print(p)
+# print(len(posts_data[:5]))
+# for p in posts_data:
+#     print(p)

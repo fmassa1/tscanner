@@ -3,7 +3,6 @@ from sql.mysql_connector import get_connection
 def addUserToDB(post):
     conn = get_connection()
     cursor = conn.cursor()
-    print(post)
     check = """
             SELECT 1 
             FROM users 
@@ -45,13 +44,14 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (url, title, author, comments, ups, created_on)
-              VALUES (%s, %s, %s, %s, %s, %s)
+              INSERT INTO posts (url, title, author, body, comments, ups, created_on)
+              VALUES (%s, %s, %s, %s, %s, %s, %s)
               """
         values = (
             post.get("permalink"),
             post.get("title"),
             post.get("author"),
+            post.get("selftext"),
             post.get("num_comments"),
             post.get("ups"),
             post.get("created_on"),
@@ -67,7 +67,6 @@ def addPostToDB(post):
 def addCommentToDB(post):
     conn = get_connection()
     cursor = conn.cursor()
-
     check = """
             SELECT 1 
             FROM comments 
@@ -78,8 +77,8 @@ def addCommentToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-            INSERT INTO comments (post_id, parent_id, author, body, url, ups)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
         values = (
             post.get("id"),
@@ -88,6 +87,8 @@ def addCommentToDB(post):
             post.get("body"),
             post.get("url"),
             post.get("ups"),
+            post.get("created_on"),
+
         )
         cursor.execute(sql, values)
         conn.commit()

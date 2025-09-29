@@ -17,6 +17,7 @@ CREATE TABLE posts (
     url VARCHAR(255) NOT NULL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     author VARCHAR(100) NOT NULL,
+    body TEXT NOT NULL,
     comments INT DEFAULT 0,
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
@@ -26,12 +27,11 @@ CREATE TABLE posts (
 
 CREATE TABLE comments (
     post_id VARCHAR(255) NOT NULL,
-    id VARCHAR(100) NOT NULL UNIQUE,
     parent_id VARCHAR(100) NOT NULL,
     author VARCHAR(100) NOT NULL,
-    body VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
     url VARCHAR(255) NOT NULL PRIMARY KEY,
     ups INT DEFAULT 0,
-    FOREIGN KEY (url) REFERENCES posts(url) ON DELETE CASCADE,
+    created_on TIMESTAMP NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 )ENGINE=InnoDB;

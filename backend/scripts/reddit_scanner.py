@@ -1,4 +1,5 @@
 import requests
+from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB
 
 reddit_urls = ["https://www.reddit.com/r/uichicago/.json"]
 headers = {"User-Agent": "MyRedditApp/0.1"}
@@ -14,7 +15,7 @@ def get_posts():
 
             for child in children:
                 post = child["data"]
-                posts_data.append({
+                post_data = {
                     "title": post.get("title"),
                     "selftext": post.get("selftext"),
                     "author": post.get("author"),
@@ -24,7 +25,14 @@ def get_posts():
                     "url": post.get("url"),
                     "permalink": f"https://www.reddit.com{post.get('permalink')}",
                     "comments": []
-                })
+                }
+                
+                if post_data.get("author") == "[deleted]":
+                    post_data["author_fullname"] = "[deleted]"
+
+                posts_data.append(post_data)
+                addUserToDB(post_data)
+                addPostToDB(post_data)
         else:
             print(f"Failed to fetch {url}: {response.status_code}")
 

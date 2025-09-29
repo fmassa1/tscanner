@@ -1,4 +1,5 @@
 import requests
+import datetime
 from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB
 
 reddit_urls = ["https://www.reddit.com/r/uichicago/.json"]
@@ -24,9 +25,10 @@ def get_posts():
                     "ups": post.get("ups"),
                     "url": post.get("url"),
                     "permalink": f"https://www.reddit.com{post.get('permalink')}",
+                    "created_on": datetime.datetime.fromtimestamp(post.get("created_utc"), tz=datetime.timezone.utc),
                     "comments": []
                 }
-                
+
                 if post_data.get("author") == "[deleted]":
                     post_data["author_fullname"] = "[deleted]"
 

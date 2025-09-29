@@ -45,8 +45,8 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (url, title, author, comments, ups)
-              VALUES (%s, %s, %s, %s, %s)
+              INSERT INTO posts (url, title, author, comments, ups, created_on)
+              VALUES (%s, %s, %s, %s, %s, %s)
               """
         values = (
             post.get("permalink"),
@@ -54,6 +54,7 @@ def addPostToDB(post):
             post.get("author"),
             post.get("num_comments"),
             post.get("ups"),
+            post.get("created_on"),
         )
         cursor.execute(sql, values)
         conn.commit()

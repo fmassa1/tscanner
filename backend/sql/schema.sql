@@ -19,6 +19,7 @@ CREATE TABLE posts (
     author VARCHAR(100) NOT NULL,
     comments INT DEFAULT 0,
     ups INT DEFAULT 0,
+    created_on TIMESTAMP NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
 )ENGINE=InnoDB;

@@ -26,3 +26,4 @@ dist-ssr
 .env
 myenv/
 backend/sql/mysql_connector.py
+__pycache__

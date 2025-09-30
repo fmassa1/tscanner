@@ -114,21 +114,21 @@ def getAllUsers():
     conn.close()
     return users
 
-def getAllProjects():
+def getAllPosts():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM projects"
+    sql = "SELECT * FROM posts"
     cursor.execute(sql)
-    projects = cursor.fetchall()
+    posts = cursor.fetchall()
 
     cursor.close()
     conn.close()
-    return projects
+    return posts
 
-def getUsersProjects(username):
+def getUsersPosts(username):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM projects WHERE author = %s"
+    sql = "SELECT * FROM posts WHERE author = %s"
     cursor.execute(sql, (username,))
     projects = cursor.fetchall()
 

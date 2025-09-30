@@ -104,13 +104,11 @@ def check_profile(profile):
                 comment = p["data"]
                 new_comment = get_comment_data(comment)
                 comments.append(new_comment)
-                addUserToDB(new_comment)
                 addCommentToDB(new_comment)
             if p["kind"] == "t3":
                 post = p["data"]
                 post_data = get_post_data(post)
                 posts_data.append(post_data)
-                addUserToDB(post_data)
                 addPostToDB(post_data)
 
 

@@ -1,5 +1,6 @@
 import requests
 import datetime
+import time
 from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB, getAllUsers
 
 reddit_urls = ["https://www.reddit.com/r/uichicago/.json"]
@@ -7,6 +8,10 @@ headers = {"User-Agent": "MyRedditApp/0.1"}
 
 posts_data = []
 
+
+def make_request(url):
+    time.sleep(1)
+    return requests.get(url, headers=headers)
 
 def get_post_data(post):
     post_data = {
@@ -49,7 +54,7 @@ def get_comment_data(comment):
 
 def get_posts():
     for url in reddit_urls:
-        response = requests.get(url, headers=headers)
+        response = make_request(url)
         if response.status_code == 200:
             data = response.json()
             children = data["data"]["children"]
@@ -68,7 +73,7 @@ def get_posts():
 def check_posts():
     for post in posts_data:
         api_url = post["permalink"] + ".json"
-        response = requests.get(api_url, headers=headers)
+        response = make_request(api_url)
         if response.status_code == 200:
             data = response.json()
             comments_data = data[1]["data"]["children"]
@@ -88,7 +93,7 @@ def check_posts():
 
 def check_profile(profile):
     api_url = profile["url"] + ".json"
-    response = requests.get(api_url, headers=headers)
+    response = make_request(api_url)
     if response.status_code == 200:
         data = response.json()
         user_post = data["data"]["children"]

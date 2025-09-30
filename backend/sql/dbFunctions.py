@@ -113,3 +113,36 @@ def getAllUsers():
     cursor.close()
     conn.close()
     return users
+
+def getAllProjects():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM projects"
+    cursor.execute(sql)
+    projects = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return projects
+
+def getUsersProjects(username):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM projects WHERE author = %s"
+    cursor.execute(sql, (username,))
+    projects = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return projects
+
+def getUsersComments(username):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM comments WHERE author = %s"
+    cursor.execute(sql, (username,))
+    comments = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return comments

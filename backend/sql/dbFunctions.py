@@ -44,10 +44,11 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (url, title, author, body, comments, ups, created_on)
-              VALUES (%s, %s, %s, %s, %s, %s, %s)
+              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on)
+              VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
               """
         values = (
+            post.get("id"),
             post.get("permalink"),
             post.get("title"),
             post.get("author"),

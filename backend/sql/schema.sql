@@ -21,6 +21,7 @@ CREATE TABLE posts (
     comments INT DEFAULT 0,
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
+    post_id VARCHAR(255) NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
 )ENGINE=InnoDB;
@@ -34,4 +35,5 @@ CREATE TABLE comments (
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
+    -- FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 )ENGINE=InnoDB;

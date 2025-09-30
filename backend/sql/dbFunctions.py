@@ -44,8 +44,8 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on)
-              VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on, subreddit)
+              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
               """
         values = (
             post.get("id"),
@@ -56,6 +56,7 @@ def addPostToDB(post):
             post.get("num_comments"),
             post.get("ups"),
             post.get("created_on"),
+            post.get("subreddit"),
         )
         cursor.execute(sql, values)
         conn.commit()
@@ -78,8 +79,8 @@ def addCommentToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on, subreddit)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
         values = (
             post.get("id"),
@@ -89,6 +90,7 @@ def addCommentToDB(post):
             post.get("url"),
             post.get("ups"),
             post.get("created_on"),
+            post.get("subreddit"),
 
         )
         cursor.execute(sql, values)
@@ -99,3 +101,15 @@ def addCommentToDB(post):
 
     cursor.close()
     conn.close()
+
+
+def getAllUsers():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM users"
+    cursor.execute(sql)
+    users = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return users

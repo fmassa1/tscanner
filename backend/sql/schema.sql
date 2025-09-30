@@ -15,13 +15,14 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
     url VARCHAR(255) NOT NULL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(300) NOT NULL,
     author VARCHAR(100) NOT NULL,
     body TEXT NOT NULL,
     comments INT DEFAULT 0,
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
     post_id VARCHAR(255) NOT NULL,
+    subreddit VARCHAR(255) NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
 )ENGINE=InnoDB;
@@ -34,6 +35,7 @@ CREATE TABLE comments (
     url VARCHAR(255) NOT NULL PRIMARY KEY,
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
+    subreddit VARCHAR(255) NOT NULL,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
     -- FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 )ENGINE=InnoDB;

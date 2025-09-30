@@ -1,6 +1,6 @@
 import requests
 import datetime
-from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB
+from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB, getAllUsers
 
 reddit_urls = ["https://www.reddit.com/r/uichicago/.json"]
 headers = {"User-Agent": "MyRedditApp/0.1"}
@@ -18,6 +18,7 @@ def get_post_data(post):
         "num_comments": post.get("num_comments"),
         "ups": post.get("ups"),
         "url": post.get("url"),
+        "subreddit": post.get("subreddit"),
         "permalink": f"https://www.reddit.com{post.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(post.get("created_utc"), tz=datetime.timezone.utc),
         "comments": []
@@ -36,6 +37,7 @@ def get_comment_data(comment):
         "ups": comment.get("ups"),
         "id": comment.get("id"),
         "parent_id": comment.get("parent_id"),
+        "subreddit": comment.get("subreddit"),
         "url": comment.get("permalink"),
         "created_on": datetime.datetime.fromtimestamp(comment.get("created_utc"), tz=datetime.timezone.utc),
 
@@ -84,25 +86,34 @@ def check_posts():
             
             post["comments"] = comments
 
-# def check_profile(profile):
-#     api_url = profile["permalink"] + ".json"
-#     response = requests.get(api_url, headers=headers)
-#     if response.status_code == 200:
-#         data = response.json()
-#         comments_data = data[1]["data"]["children"]
-#         comments = []
+def check_profile(profile):
+    api_url = profile["url"] + ".json"
+    response = requests.get(api_url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        user_post = data["data"]["children"]
+        comments = []
 
-#         for c in comments_data:
-#             if c["kind"] == "t1":
-#                 comment = c["data"]
-#                 new_comment = get_comment_data(comment)
-#                 comments.append(new_comment)
-#                 addUserToDB(new_comment)
-#                 addCommentToDB(new_comment)
+        for p in user_post:
+            if p["kind"] == "t1":
+                comment = p["data"]
+                new_comment = get_comment_data(comment)
+                comments.append(new_comment)
+                addUserToDB(new_comment)
+                addCommentToDB(new_comment)
+            if p["kind"] == "t3":
+                post = p["data"]
+                post_data = get_post_data(post)
+                posts_data.append(post_data)
+                addUserToDB(post_data)
+                addPostToDB(post_data)
 
 
 get_posts()
 check_posts()
+users = getAllUsers()
+for u in users:
+    check_profile(u)
 # print(len(posts_data[:5]))
 # for p in posts_data:
 #     print(p)

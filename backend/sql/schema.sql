@@ -39,3 +39,9 @@ CREATE TABLE comments (
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
     -- FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 )ENGINE=InnoDB;
+
+CREATE TABLE subreddits (
+    url VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL PRIMARY KEY,
+    flags INT DEFAULT 0
+)ENGINE=InnoDB;

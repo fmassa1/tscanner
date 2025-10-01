@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <title>{{ username }}'s Profile</title>
+</head>
+<body>
+    <h1>{{ username }}</h1>
+
+    <h2>Posts</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Subreddit</th>
+            <th>Ups</th>
+            <th>Comments</th>
+            <th>Created On</th>
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td><a href="{{ post.url }}" target="_blank">{{ post.title }}</a></td>
+            <td>{{ post.body }}</td>
+            <td>{{ post.subreddit }}</td>
+            <td>{{ post.ups }}</td>
+            <td>{{ post.comments }}</td>
+            <td>{{ post.created_on }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Comments</h2>
+    <table>
+        <tr>
+            <th>URL</th>
+            <th>Body</th>
+            <th>Subreddit</th>
+            <th>Ups</th>
+            <th>Created On</th>
+        </tr>
+        {% for comment in comments %}
+        <tr>
+            <td><a href="{{ comment.url }}" target="_blank">Link </a></td>
+            <td>{{ comment.body }}</td>
+            <td>{{ comment.subreddit }}</td>
+            <td>{{ comment.ups }}</td>
+            <td>{{ comment.created_on }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

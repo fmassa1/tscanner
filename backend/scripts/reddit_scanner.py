@@ -122,12 +122,11 @@ def check_profile(profile):
 
 
 
-print(calculate_risk_score("I hate you"))
-# get_posts()
-# check_posts()
-# users = getAllUsers()
-# for u in users:
-#     check_profile(u)
+get_posts()
+check_posts()
+users = getAllUsers()
+for u in users:
+    check_profile(u)
 # print(len(posts_data[:5]))
 # for p in posts_data:
 #     print(p)

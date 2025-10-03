@@ -13,7 +13,7 @@
                 <th>Username</th>
                 <th>Reddit ID</th>
                 <th>Profile URL</th>
-                <th>Flags</th>
+                <th>Risk Score</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                 <td><a href="/user/{{ user.username }}">{{ user.username }}</td>
                 <td>{{ user.id }}</td>
                 <td><a href="{{ user.url }}" target="_blank">{{ user.url }}</a></td>
-                <td>{{ user.flags }}</td>
+                <td>{{ user.risk_score }}</td>
             </tr>
             {% endfor %}
         </tbody>

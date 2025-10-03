@@ -44,8 +44,8 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on, subreddit)
-              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on, subreddit, risk_score)
+              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
               """
         values = (
             post.get("id"),
@@ -57,9 +57,12 @@ def addPostToDB(post):
             post.get("ups"),
             post.get("created_on"),
             post.get("subreddit"),
+            post.get("risk_score"),
+
         )
         cursor.execute(sql, values)
         conn.commit()
+        updateUserScore(post.get("author"), post.get("risk_score"))
     else:
         print(f"Post already exists in DB: {post.get('title')}")
 
@@ -79,8 +82,8 @@ def addCommentToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on, subreddit)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on, subreddit, risk_score)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
         values = (
             post.get("id"),
@@ -91,10 +94,14 @@ def addCommentToDB(post):
             post.get("ups"),
             post.get("created_on"),
             post.get("subreddit"),
+            post.get("risk_score"),
+            
 
         )
         cursor.execute(sql, values)
         conn.commit()
+        updateUserScore(post.get("author"), post.get("risk_score"))
+
     
     else:
         print(f"Comment already exists in DB: {post.get('id')}")
@@ -106,7 +113,11 @@ def addCommentToDB(post):
 def getAllUsers():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM users"
+    sql = """
+        SELECT * 
+        FROM users
+        ORDER BY risk_score DESC
+        """
     cursor.execute(sql)
     users = cursor.fetchall()
 
@@ -117,7 +128,11 @@ def getAllUsers():
 def getAllPosts():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM posts"
+    sql = """
+        SELECT * 
+        FROM posts
+        ORDER BY risk_score DESC
+        """
     cursor.execute(sql)
     posts = cursor.fetchall()
 
@@ -128,7 +143,12 @@ def getAllPosts():
 def getUsersPosts(username):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM posts WHERE author = %s"
+    sql = """
+        SELECT * 
+        FROM posts 
+        WHERE author = %s
+        ORDER BY risk_score DESC
+        """
     cursor.execute(sql, (username,))
     projects = cursor.fetchall()
 
@@ -139,10 +159,30 @@ def getUsersPosts(username):
 def getUsersComments(username):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM comments WHERE author = %s"
+    sql = """
+        SELECT * 
+        FROM comments 
+        WHERE author = %s
+        ORDER BY risk_score DESC
+        """
     cursor.execute(sql, (username,))
     comments = cursor.fetchall()
 
     cursor.close()
     conn.close()
     return comments
+
+
+def updateUserScore(username, score):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    sql = """
+        UPDATE users
+        SET risk_score = risk_score + %s
+        WHERE username = %s
+        """
+    cursor.execute(sql, (score, username))
+    conn.commit()
+
+    cursor.close()
+    conn.close()

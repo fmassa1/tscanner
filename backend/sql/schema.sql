@@ -10,7 +10,7 @@ CREATE TABLE users (
     url VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(100) NOT NULL PRIMARY KEY,
     id VARCHAR(100) NOT NULL UNIQUE,
-    flags INT DEFAULT 0
+    risk_score INT DEFAULT 0
 )ENGINE=InnoDB;
 
 CREATE TABLE posts (
@@ -23,6 +23,7 @@ CREATE TABLE posts (
     created_on TIMESTAMP NOT NULL,
     post_id VARCHAR(255) NOT NULL,
     subreddit VARCHAR(255) NOT NULL,
+    risk_score INT DEFAULT 0,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
 
 )ENGINE=InnoDB;
@@ -36,6 +37,7 @@ CREATE TABLE comments (
     ups INT DEFAULT 0,
     created_on TIMESTAMP NOT NULL,
     subreddit VARCHAR(255) NOT NULL,
+    risk_score INT DEFAULT 0,
     FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE
     -- FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 )ENGINE=InnoDB;

@@ -2,11 +2,20 @@ import requests
 import datetime
 import time
 from sql.dbFunctions import addUserToDB, addPostToDB, addCommentToDB, getAllUsers
+from scripts.hate_scanner import calculate_risk_score
 
-reddit_urls = ["https://www.reddit.com/r/uichicago/.json"]
+reddit_urls = [   #"https://www.reddit.com/r/uichicago/.json?limit=100",
+               "https://www.reddit.com/r/greentext/.json?limit=100", 
+               "https://www.reddit.com/r/4chan/.json?limit=100", 
+               "https://www.reddit.com/r/PoliticalCompassMemes/.json",
+            #    "https://www.reddit.com/r/SocialJusticeInAction/.json", BANNED
+               "https://www.reddit.com/r/LoveForLandlords/.json?limit=100", 
+            #    "https://www.reddit.com/r/AntiHateCommunites/.json" GONE
+               ]
 headers = {"User-Agent": "MyRedditApp/0.1"}
 
 posts_data = []
+
 
 
 def make_request(url):
@@ -43,7 +52,7 @@ def get_comment_data(comment):
         "id": comment.get("id"),
         "parent_id": comment.get("parent_id"),
         "subreddit": comment.get("subreddit"),
-        "url": comment.get("permalink"),
+        "url": f"https://www.reddit.com{comment.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(comment.get("created_utc"), tz=datetime.timezone.utc),
 
     }
@@ -112,11 +121,13 @@ def check_profile(profile):
                 addPostToDB(post_data)
 
 
-get_posts()
-check_posts()
-users = getAllUsers()
-for u in users:
-    check_profile(u)
+
+print(calculate_risk_score("I hate you"))
+# get_posts()
+# check_posts()
+# users = getAllUsers()
+# for u in users:
+#     check_profile(u)
 # print(len(posts_data[:5]))
 # for p in posts_data:
 #     print(p)

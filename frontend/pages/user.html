@@ -16,6 +16,7 @@
             <th>Ups</th>
             <th>Comments</th>
             <th>Created On</th>
+            <th>Risk Score</th>
         </tr>
         {% for post in posts %}
         <tr>
@@ -25,6 +26,7 @@
             <td>{{ post.ups }}</td>
             <td>{{ post.comments }}</td>
             <td>{{ post.created_on }}</td>
+            <td>{{ post.risk_score }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -37,6 +39,7 @@
             <th>Subreddit</th>
             <th>Ups</th>
             <th>Created On</th>
+            <th>Risk Score</th>
         </tr>
         {% for comment in comments %}
         <tr>
@@ -45,6 +48,7 @@
             <td>{{ comment.subreddit }}</td>
             <td>{{ comment.ups }}</td>
             <td>{{ comment.created_on }}</td>
+            <td>{{ comment.risk_score }}</td>
         </tr>
         {% endfor %}
     </table>

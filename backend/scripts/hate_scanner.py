@@ -78,8 +78,9 @@ def calculate_risk_score(post, user_history=None):
         risk_score += 5
         matches.append("repeat_offender")
 
-    return {
-        "risk_score": risk_score,
-        "matches": matches,
-        "sentiment": sentiment
-    }
+    # return {
+    #     "risk_score": risk_score,
+    #     "matches": matches,
+    #     "sentiment": sentiment
+    # }
+    return risk_score

@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS tscrapper;
 USE tscrapper;
 
-
+DROP TABLE IF EXISTS subreddits;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;

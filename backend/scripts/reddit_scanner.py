@@ -35,7 +35,8 @@ def get_post_data(post):
         "subreddit": post.get("subreddit"),
         "permalink": f"https://www.reddit.com{post.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(post.get("created_utc"), tz=datetime.timezone.utc),
-        "comments": []
+        "comments": [],
+        "risk_score": calculate_risk_score( post.get("title") + post.get("selftext") )
     }
 
     if post_data.get("author") == "[deleted]":
@@ -54,8 +55,9 @@ def get_comment_data(comment):
         "subreddit": comment.get("subreddit"),
         "url": f"https://www.reddit.com{comment.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(comment.get("created_utc"), tz=datetime.timezone.utc),
-
+        "risk_score": calculate_risk_score( comment.get("body") )
     }
+    
     if new_comment.get("author") == "[deleted]":
         new_comment["author_fullname"] = "[deleted]"
     

@@ -44,8 +44,8 @@ def addPostToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on, subreddit, risk_score)
-              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+              INSERT INTO posts (post_id, url, title, author, body, comments, ups, created_on, subreddit, risk_score, neg, neutral, pos, compound)
+              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
               """
         values = (
             post.get("id"),
@@ -58,6 +58,10 @@ def addPostToDB(post):
             post.get("created_on"),
             post.get("subreddit"),
             post.get("risk_score"),
+            post.get("neg"),            
+            post.get("neutral"),            
+            post.get("pos"),            
+            post.get("compound"), 
 
         )
         cursor.execute(sql, values)
@@ -82,8 +86,8 @@ def addCommentToDB(post):
 
     if cursor.fetchone() is None:
         sql = """
-            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on, subreddit, risk_score)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO comments (post_id, parent_id, author, body, url, ups, created_on, subreddit, risk_score, neg, neutral, pos, compound)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
         values = (
             post.get("id"),
@@ -95,7 +99,10 @@ def addCommentToDB(post):
             post.get("created_on"),
             post.get("subreddit"),
             post.get("risk_score"),
-            
+            post.get("neg"),            
+            post.get("neutral"),            
+            post.get("pos"),            
+            post.get("compound"),            
 
         )
         cursor.execute(sql, values)

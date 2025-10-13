@@ -36,8 +36,20 @@ def get_post_data(post):
         "permalink": f"https://www.reddit.com{post.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(post.get("created_utc"), tz=datetime.timezone.utc),
         "comments": [],
-        "risk_score": calculate_risk_score( post.get("title") + post.get("selftext") )
+        "risk_score": "",
+        "neg":  0,
+        "neutral": 0, 
+        "pos": 0, 
+        "compound": 0,  
     }
+
+    risks = calculate_risk_score( post.get("title") + post.get("selftext") )
+    post_data["risk_score"] = risks["risk_score"]
+    post_data["neg"] = risks["sentiment"]["neg"]
+    post_data["neutral"] = risks["sentiment"]["neu"]
+    post_data["pos"] = risks["sentiment"]["pos"]
+    post_data["compound"] = risks["sentiment"]["compound"]
+
 
     if post_data.get("author") == "[deleted]":
         post_data["author_fullname"] = "[deleted]"
@@ -55,9 +67,19 @@ def get_comment_data(comment):
         "subreddit": comment.get("subreddit"),
         "url": f"https://www.reddit.com{comment.get('permalink')}",
         "created_on": datetime.datetime.fromtimestamp(comment.get("created_utc"), tz=datetime.timezone.utc),
-        "risk_score": calculate_risk_score( comment.get("body") )
+        "risk_score": "",
+        "neg":  0,
+        "neutral": 0, 
+        "pos": 0, 
+        "compound": 0, 
     }
-    
+    risks = calculate_risk_score( comment.get("body") )
+    new_comment["risk_score"] = risks["risk_score"]
+    new_comment["neg"] = risks["sentiment"]["neg"]
+    new_comment["neutral"] = risks["sentiment"]["neu"]
+    new_comment["pos"] = risks["sentiment"]["pos"]
+    new_comment["compound"] = risks["sentiment"]["compound"]
+
     if new_comment.get("author") == "[deleted]":
         new_comment["author_fullname"] = "[deleted]"
     

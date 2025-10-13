@@ -17,6 +17,7 @@
             <th>Comments</th>
             <th>Created On</th>
             <th>Risk Score</th>
+            <th>Sentiment</th>
         </tr>
         {% for post in posts %}
         <tr>
@@ -27,6 +28,12 @@
             <td>{{ post.comments }}</td>
             <td>{{ post.created_on }}</td>
             <td>{{ post.risk_score }}</td>
+            <td>
+                Neg: {{ post.neg }}<br>
+                Neutral: {{ post.neutral }}<br>
+                Pos: {{ post.pos }}<br>
+                Compound: {{ post.compound }}<br>
+            </td>        
         </tr>
         {% endfor %}
     </table>
@@ -40,6 +47,8 @@
             <th>Ups</th>
             <th>Created On</th>
             <th>Risk Score</th>
+            <th>Sentiment</th>
+
         </tr>
         {% for comment in comments %}
         <tr>
@@ -49,6 +58,12 @@
             <td>{{ comment.ups }}</td>
             <td>{{ comment.created_on }}</td>
             <td>{{ comment.risk_score }}</td>
+            <td>
+                Neg: {{ comment.neg }} <br>
+                Neutral: {{ comment.neutral }} <br>
+                Pos: {{ comment.pos }} <br>
+                Compound: {{ comment.compound }} <br>
+            </td>
         </tr>
         {% endfor %}
     </table>

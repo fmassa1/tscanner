@@ -193,3 +193,23 @@ def updateUserScore(username, score):
 
     cursor.close()
     conn.close()
+
+
+def get_subreddit_risk_data():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    sql = """
+        SELECT subreddit,
+               COUNT(*) AS post_count,
+               AVG(risk_score) AS avg_risk
+        FROM posts
+        GROUP BY subreddit
+        ORDER BY avg_risk DESC;
+    """
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return results

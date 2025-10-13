@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subreddit Risk Overview</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <h1>Subreddit Risk & Activity</h1>
+
+    <div style="width:80%; margin:auto;">
+        <canvas id="riskChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('riskChart').getContext('2d');
+
+        const data = {
+            labels: {{ subreddits|tojson }},
+            datasets: [
+                {
+                    label: 'Average Risk Score',
+                    data: {{ avg_risk|tojson }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y1'
+                },
+                {
+                    label: 'Post Count',
+                    data: {{ post_counts|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    type: 'line',
+                    yAxisID: 'y2'
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y1: {
+                        beginAtZero: true,
+                        position: 'left',
+                        title: { display: true, text: 'Average Risk Score' }
+                    },
+                    y2: {
+                        beginAtZero: true,
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Number of Posts' }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    title: {
+                        display: true,
+                        text: 'Subreddit Risk & Post Frequency'
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>

@@ -17,6 +17,17 @@ def user_page(username):
     comments = getUsersComments(username)
     return render_template("user.html", username=username, posts=posts, comments=comments)
 
+
+@app.route("/subreddit_stats")
+def subreddit_stats():
+    data = get_subreddit_risk_data()
+
+    subreddits = [row['subreddit'] for row in data]
+    avg_risk = [row['avg_risk'] for row in data]
+    post_counts = [row['post_count'] for row in data]
+
+    return render_template("subreddits.html", subreddits=subreddits, avg_risk=avg_risk, post_counts=post_counts)
+
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=5000, debug=True)
     #app.run(debug=True)
